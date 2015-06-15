@@ -37,7 +37,8 @@ namespace Dijkstra
         public Image OriginalBitmap { get; set; }
         public Image CurrentBitmap { get; set; }
         private int CurrentStep = 0;
-        private List<Graph> Steps { get; set; } 
+        private List<Graph> Steps { get; set; }
+        public string CurrentFileName { get; set; }
 
         int _picWidth, _picHeight, _zoomInt = 100;
         private double _picRatio;
@@ -173,8 +174,8 @@ namespace Dijkstra
             }
 
             this.CurrentGraph = this.BaseGraph.Copy();
-            var start = this.CurrentGraph.Nodes[comboBox1.SelectedIndex];
-            var end = this.CurrentGraph.Nodes[comboBox2.SelectedIndex];
+            var start = this.CurrentGraph.Nodes[this.CurrentGraph.Nodes.Keys.ToArray()[comboBox1.SelectedIndex]];
+            var end = this.CurrentGraph.Nodes[this.CurrentGraph.Nodes.Keys.ToArray()[comboBox2.SelectedIndex]];
 
             Steps = this.CurrentGraph.Dijkstra(start, end);
 
@@ -277,8 +278,8 @@ namespace Dijkstra
                     return;
                 }
                 this.CurrentGraph = this.BaseGraph.Copy();
-                var start = this.CurrentGraph.Nodes[comboBox1.SelectedIndex];
-                var end = this.CurrentGraph.Nodes[comboBox2.SelectedIndex];
+                var start = this.CurrentGraph.Nodes[this.CurrentGraph.Nodes.Keys.ToArray()[comboBox1.SelectedIndex]];
+                var end = this.CurrentGraph.Nodes[this.CurrentGraph.Nodes.Keys.ToArray()[comboBox2.SelectedIndex]];
 
                 Steps = this.CurrentGraph.Dijkstra(start, end);
 
@@ -337,19 +338,30 @@ namespace Dijkstra
 
         private void salvarToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(saveFileDialog1.ShowDialog() != DialogResult.OK)
-                return;
+            if (string.IsNullOrEmpty(this.CurrentFileName))
+            {
+                if (saveFileDialog1.ShowDialog() != DialogResult.OK)
+                    return;
+
+                this.CurrentFileName = saveFileDialog1.FileName;
+                this.Text = "Algoritmo de Dijkstra - " + this.CurrentFileName;
+            }
+            
             
             IFormatter formatter = new BinaryFormatter();
-            Stream stream = new FileStream(saveFileDialog1.FileName, FileMode.Create, FileAccess.Write, FileShare.None);
+            Stream stream = new FileStream(this.CurrentFileName, FileMode.Create, FileAccess.Write, FileShare.None);
             formatter.Serialize(stream, this.BaseGraph);
             stream.Close();
         }
+
 
         private void carregarToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (openFileDialog1.ShowDialog() != DialogResult.OK)
                 return;
+
+            this.CurrentFileName = openFileDialog1.FileName;
+            this.Text = "Algoritmo de Dijkstra - " + this.CurrentFileName;
 
             IFormatter formatter = new BinaryFormatter();
             Stream stream = new FileStream(openFileDialog1.FileName, FileMode.Open, FileAccess.Read, FileShare.Read);
@@ -386,6 +398,35 @@ namespace Dijkstra
             button5.Enabled = false;
 
             RefreshGraphDraw();
+        }
+
+        private void novoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.BaseGraph = new Graph(GraphType.Undirected);
+            this.Update();
+            this.CurrentFileName = "";
+            this.Text = "Algoritmo de Dijkstra - Sem Título.grf";
+        }
+
+        private void salvarComoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (saveFileDialog1.ShowDialog() != DialogResult.OK)
+                return;
+
+            this.CurrentFileName = saveFileDialog1.FileName;
+
+            this.Text = "Algoritmo de Dijkstra - " + this.CurrentFileName;
+            
+            IFormatter formatter = new BinaryFormatter();
+            Stream stream = new FileStream(this.CurrentFileName, FileMode.Create, FileAccess.Write, FileShare.None);
+            formatter.Serialize(stream, this.BaseGraph);
+            stream.Close();
+        
+        }
+
+        private void legendaToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            new AboutBox1().ShowDialog();
         }
     }
 }

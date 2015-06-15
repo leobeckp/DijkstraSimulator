@@ -65,12 +65,20 @@ namespace Dijkstra
         {
             if (color == Color.Red)
                 return "red";
+            if (color == Color.Yellow)
+                return "yellow";
             if (color == Color.Green)
                 return "green";
             if (color == Color.Blue)
                 return "blue";
+            if (color == Color.White)
+                return "white";
+            if (color == Color.Orange)
+                return "orange";
+            if (color == Color.Black)
+                return "black";
                 
-            return "black";
+            return "white";
         }
 
         public Node GetNodeById(int id)
@@ -115,7 +123,7 @@ namespace Dijkstra
         {
             foreach (var node in Nodes)
             {
-                node.Value.Color = Color.Black;
+                node.Value.Color = Color.White;
                 foreach (var edge in node.Value.AdjacencyList)
                 {
                     edge.Value.Color = Color.Black;
@@ -158,7 +166,7 @@ namespace Dijkstra
             {
                 distance.Add(node.Value,int.MaxValue);
                 shortest.Add(node.Value, null);
-                node.Value.Color = Color.Black;
+                node.Value.Color = Color.White;
             }
 
             distance[startNode] = 0;
@@ -185,7 +193,7 @@ namespace Dijkstra
 
                         shortest[v.Key] = u;
 
-                        v.Value.Color = Color.Green;
+                        v.Value.Color = Color.Yellow;
                         
                         steps.Add(this.Copy());
                         
@@ -193,7 +201,7 @@ namespace Dijkstra
                     }
                     
                 }
-                u.Color = Color.Black;
+                u.Color = Color.Orange;
             }
 
             Node aux = endNode;
@@ -204,10 +212,15 @@ namespace Dijkstra
             while (aux != startNode)
             {
                 var edge = aux.AdjacencyList[shortest[aux]];
+                aux.Color = Color.Blue;
                 edge.Color = Color.Green;
+                steps.Add(this.Copy());
+                aux.Color = Color.Orange;
                 aux = shortest[aux];
             }
-            //steps.Add(this.Copy());
+
+            steps.Add(this.Copy());
+
             return steps;
         }
 
@@ -216,7 +229,7 @@ namespace Dijkstra
             string b = Type == GraphType.Undirected ? "graph {" : "digraph {";
 
             var addedEdges = new List<Edge>();
-            b += "{"+string.Join(";", Nodes.Select(e => e.Value.Name + " [fillcolor=" + GetColorName(e.Value.Color) + "]"))+"}";
+            b += "{" + string.Join(";", Nodes.Select(e => e.Key + " [fillcolor=" + GetColorName(e.Value.Color) + ",style=filled,label=\""+e.Value.Name+"\"]")) + "}";
             foreach (var node in Nodes.Values)
             {
                 if (!string.IsNullOrEmpty(b))
@@ -228,7 +241,7 @@ namespace Dijkstra
                             b += ";";
                         if (!addedEdges.Contains(edge.Value))
                         {
-                            b += node.Name + (Type == GraphType.Directed ? " -> " : " -- ") + edge.Key.Name +
+                            b += node.GetId() + (Type == GraphType.Directed ? " -> " : " -- ") + edge.Key.GetId() +
                                  "[label=\"" + edge.Value.Cost +
                                  "\",weight=\"" + edge.Value.Cost + "\",color=\"" +
                                  GetColorName(edge.Value.Color) + "\"]";
@@ -257,7 +270,7 @@ namespace Dijkstra
         {
             this.Name = name;
             this.AdjacencyList = new Dictionary<Node, Edge>();
-            this.Color = System.Drawing.Color.Black;
+            this.Color = System.Drawing.Color.White;
             this.Id = id;
         }
 
