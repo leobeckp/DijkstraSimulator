@@ -158,6 +158,13 @@ namespace Dijkstra
             var steps = new List<Graph>();
             steps.Add(this.Copy());
 
+            if (endNode == startNode)
+            {
+                startNode.Color = Color.Orange;
+                steps.Add(this.Copy());
+                return steps;
+            }
+
             var nodes = new List<Node>(Nodes.Values);
             var distance = new Dictionary<Node,int>();
             var shortest = new Dictionary<Node, Node>();

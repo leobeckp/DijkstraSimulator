@@ -128,7 +128,7 @@ namespace Dijkstra
                     e.StackTrace, "Erro ao renderizar grafo", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        private void Update()
+        private void UpdateGraph()
         {
             this.listView1.Items.Clear();
             this.comboBox1.Items.Clear();
@@ -155,7 +155,7 @@ namespace Dijkstra
         private void button1_Click(object sender, EventArgs e)
         {
             if (new AddNode(this.BaseGraph).ShowDialog() == DialogResult.OK)
-                Update();
+                UpdateGraph();
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -196,7 +196,7 @@ namespace Dijkstra
         private void button2_Click(object sender, EventArgs e)
         {
             if (new DeleteNode(this.BaseGraph).ShowDialog() == DialogResult.OK)
-                Update();
+                UpdateGraph();
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -206,7 +206,7 @@ namespace Dijkstra
             if (form.ShowDialog() == DialogResult.OK)
             {
                 this.BaseGraph = form.CurrentGraph;
-                Update();
+                UpdateGraph();
             }
         }
 
@@ -368,7 +368,7 @@ namespace Dijkstra
             Graph obj = (Graph)formatter.Deserialize(stream);
             stream.Close();
             this.BaseGraph = obj;
-            this.Update();
+            this.UpdateGraph();
         }
 
         private void sairToolStripMenuItem_Click(object sender, EventArgs e)
@@ -403,7 +403,7 @@ namespace Dijkstra
         private void novoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.BaseGraph = new Graph(GraphType.Undirected);
-            this.Update();
+            this.UpdateGraph();
             this.CurrentFileName = "";
             this.Text = "Algoritmo de Dijkstra - Sem Título.grf";
         }

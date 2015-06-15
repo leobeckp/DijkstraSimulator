@@ -74,9 +74,9 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(57, 56);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(361, 13);
+            this.label2.Size = new System.Drawing.Size(400, 13);
             this.label2.TabIndex = 3;
-            this.label2.Text = "Aresta processada, no caminho mínimo entre nó de incício e nó de término";
+            this.label2.Text = "Aresta processada, pertence ao caminho mínimo entre nó de início e nó de término";
             // 
             // pictureBox2
             // 
@@ -93,9 +93,9 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(57, 90);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(95, 13);
+            this.label3.Size = new System.Drawing.Size(221, 13);
             this.label3.TabIndex = 5;
-            this.label3.Text = "Aresta processada";
+            this.label3.Text = "Aresta processada, possível caminho mínimo";
             // 
             // pictureBox3
             // 
@@ -187,7 +187,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(435, 245);
+            this.ClientSize = new System.Drawing.Size(465, 245);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.pictureBox7);
             this.Controls.Add(this.label6);

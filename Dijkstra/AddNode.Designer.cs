@@ -153,7 +153,6 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NodeName;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Adj;
         private System.Windows.Forms.DataGridViewTextBoxColumn NName;
         private System.Windows.Forms.DataGridViewTextBoxColumn Weight;
