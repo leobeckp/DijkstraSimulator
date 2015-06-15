@@ -166,6 +166,10 @@ namespace Dijkstra
             while (nodes.Count > 0)
             {
                 var u = GetSmallestNode(nodes, distance);
+
+                if (u == null)
+                    break;
+
                 nodes.Remove(u);
 
                 u.Color = Color.Blue;
@@ -176,7 +180,7 @@ namespace Dijkstra
                     {
                         distance[v.Key] = distance[u] + v.Value.Cost;
 
-                        if (shortest[v.Key] != null)
+                       if (shortest[v.Key] != null)
                             v.Key.AdjacencyList[shortest[v.Key]].Color = Color.Red;
 
                         shortest[v.Key] = u;
@@ -189,9 +193,13 @@ namespace Dijkstra
                     }
                     
                 }
+                u.Color = Color.Black;
             }
 
             Node aux = endNode;
+
+            if (shortest[aux] == null)
+                return new List<Graph>();
             
             while (aux != startNode)
             {

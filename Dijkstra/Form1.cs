@@ -39,7 +39,7 @@ namespace Dijkstra
         private int CurrentStep = 0;
         private List<Graph> Steps { get; set; } 
 
-        int _picWidth, _picHeight, _zoomInt = 0;
+        int _picWidth, _picHeight, _zoomInt = 100;
         private double _picRatio;
         private bool _isPanning = false;
         private Point _startPt;
@@ -83,39 +83,9 @@ namespace Dijkstra
         {
             pictureBox1.Width = _picWidth;
             pictureBox1.Height = _picHeight;
-
-            switch (_zoomInt)
-            {
-                case -2:
-                    pictureBox1.Width = Convert.ToInt32(((double)pictureBox1.Width) * 0.5);
-                    pictureBox1.Height = Convert.ToInt32(((double)pictureBox1.Width) * _picRatio);
-                    break;
-                case -1:
-                    pictureBox1.Width = Convert.ToInt32(((double)pictureBox1.Width) * 0.75);
-                    pictureBox1.Height = Convert.ToInt32(((double)pictureBox1.Width) * _picRatio);
-                    break;
-                case 0:
-                    pictureBox1.Width = _picWidth;
-                    pictureBox1.Height = _picHeight;
-                    break;
-                case 1:
-                    pictureBox1.Width = Convert.ToInt32(((double)pictureBox1.Width) * 1.1);
-                    pictureBox1.Height = Convert.ToInt32(((double)pictureBox1.Width) * _picRatio);
-                    break;
-                case 2:
-                    pictureBox1.Width = Convert.ToInt32(((double)pictureBox1.Width) * 1.5);
-                    pictureBox1.Height = Convert.ToInt32(((double)pictureBox1.Width) * _picRatio);
-                    break;
-                case 3:
-                    pictureBox1.Width = Convert.ToInt32(((double)pictureBox1.Width) * 1.75);
-                    pictureBox1.Height = Convert.ToInt32(((double)pictureBox1.Width) * _picRatio);
-                    break;
-                case 4:
-                    pictureBox1.Width = Convert.ToInt32(((double)pictureBox1.Width) * 2);
-                    pictureBox1.Height = Convert.ToInt32(((double)pictureBox1.Width) * _picRatio);
-                    break;
-            }
-
+           
+            pictureBox1.Width = Convert.ToInt32(((double)pictureBox1.Width) * (_zoomInt * 0.01) );
+            pictureBox1.Height = Convert.ToInt32(((double)pictureBox1.Width) * _picRatio);
 
             pictureBox1.Update();
         }
@@ -129,19 +99,32 @@ namespace Dijkstra
         }
         private void RefreshGraphDraw()
         {
-            using (MemoryStream ms = new MemoryStream(Generator.GenerateGraph(this.CurrentGraph.ToDotFormat(), Enums.GraphReturnType.Png).ToArray()))
+            try
             {
-                var img = Image.FromStream(ms);
-                this.pictureBox1.Image = img;
-                this.OriginalBitmap = this.pictureBox1.Image;
-                pictureBox1.Image = img;
-                pictureBox1.Width = img.Width;
-                pictureBox1.Height = img.Height;
-                _picWidth = pictureBox1.Width;
-                _picHeight = pictureBox1.Height;
-                GetRatio();
-                CenterImage();
-                this.CurrentBitmap = this.pictureBox1.Image;
+                using (
+                    MemoryStream ms =
+                        new MemoryStream(
+                            Generator.GenerateGraph(this.CurrentGraph.ToDotFormat(), Enums.GraphReturnType.Png)
+                                .ToArray()))
+                {
+                    var img = Image.FromStream(ms);
+                    this.pictureBox1.Image = img;
+                    this.OriginalBitmap = this.pictureBox1.Image;
+                    pictureBox1.Image = img;
+                    pictureBox1.Width = img.Width;
+                    pictureBox1.Height = img.Height;
+                    _picWidth = pictureBox1.Width;
+                    _picHeight = pictureBox1.Height;
+                    GetRatio();
+                    ZoomPictureBox();
+                    this.CurrentBitmap = this.pictureBox1.Image;
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(
+                    "Não foi possível renderizar o grafo. MOTIVO: " + e.Message + "\r\n\r\nDetalhes do erro: " +
+                    e.StackTrace, "Erro ao renderizar grafo", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         private void Update()
@@ -166,6 +149,7 @@ namespace Dijkstra
             }
 
             RefreshGraphDraw();
+            CenterImage();
         }
         private void button1_Click(object sender, EventArgs e)
         {
@@ -194,6 +178,13 @@ namespace Dijkstra
 
             Steps = this.CurrentGraph.Dijkstra(start, end);
 
+            if (Steps.Count == 0)
+            {
+                MessageBox.Show("Nenhum caminho mínimo encontrado.", "Erro ao executar Algoritmo de Dijkstra",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             CurrentStep = this.Steps.Count - 1;
             button5.Enabled = true;
             button6.Enabled = false;
@@ -220,21 +211,25 @@ namespace Dijkstra
 
         private void pictureBox1_MouseWheel(object sender, MouseEventArgs e)
         {
+            int scrollSpeed = 3;
+
             if (e.Delta > 0)
             {
-                _zoomInt++;
-                if (_zoomInt > 4)
+                _zoomInt += scrollSpeed;
+                if (_zoomInt > 500)
                 {
-                    _zoomInt = 4;
+                    _zoomInt = 500;
+                    return;
                 }
                 ZoomPictureBox();
             }
             else if (e.Delta < 0)
             {
-                _zoomInt--;
-                if (_zoomInt == -3)
+                _zoomInt -= scrollSpeed;
+                if (_zoomInt <= 10)
                 {
-                    _zoomInt = -2;
+                    _zoomInt = 10;
+                    return;
                 }
                 ZoomPictureBox();
             }
@@ -244,6 +239,7 @@ namespace Dijkstra
         {
             _isPanning = true;
             _startPt = e.Location;
+            Cursor = Cursors.SizeAll;
         }
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
@@ -285,6 +281,14 @@ namespace Dijkstra
                 var end = this.CurrentGraph.Nodes[comboBox2.SelectedIndex];
 
                 Steps = this.CurrentGraph.Dijkstra(start, end);
+
+                if (Steps.Count == 0)
+                {
+                    MessageBox.Show("Nenhum caminho mínimo encontrado.", "Erro ao executar Algoritmo de Dijkstra",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
                 CurrentStep = 0;
             }
             else
@@ -295,8 +299,10 @@ namespace Dijkstra
                     button5.Enabled = true;
                     return;
                 }
+
                 CurrentStep++;
                 button5.Enabled = true;
+
                 if (CurrentStep >= Steps.Count - 1)
                 {
                     button6.Enabled = false;
