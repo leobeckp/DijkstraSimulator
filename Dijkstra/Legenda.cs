@@ -8,9 +8,9 @@ using System.Windows.Forms;
 
 namespace Dijkstra
 {
-    public partial class AboutBox1 : Form
+    public partial class Legenda : Form
     {
-        public AboutBox1()
+        public Legenda()
         {
             InitializeComponent();
             this.Text = String.Format("Legenda");

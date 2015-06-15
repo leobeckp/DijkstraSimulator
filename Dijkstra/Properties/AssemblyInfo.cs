@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Dijkstra")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("DijkstraSimulator")]
+[assembly: AssemblyDescription("Simulador do Algoritmo de Dijkstra para grafos, com opção de exibição passo-a-passo.\r\n\r\nDesenvolvido em C#, para apresentação em seminário da disciplina SSC0630 - Inteligência Artificial, ministrada pelo Prof. Dr. João Luís Garcia Rosa, na Universidade de São Paulo, campus São Carlos.\r\n\r\nAutores:\r\n- Leonardo Beck Prates, Nº USP 7962121\r\n- Marlon Jordan Francisco, Nº USP 8668945\r\n- Mateus Ribeiro Vanzella, Nº USP 8504181\r\n- Vitor Bertozzi da Silva, Nº USP 8622401")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Dijkstra")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
+[assembly: AssemblyCompany("Universidade de São Paulo")]
+[assembly: AssemblyProduct("Algoritmo de Dijkstra")]
+[assembly: AssemblyCopyright("Copyright © 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -34,3 +34,5 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+
+

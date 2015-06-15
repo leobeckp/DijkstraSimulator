@@ -158,6 +158,9 @@ namespace Dijkstra
             var steps = new List<Graph>();
             steps.Add(this.Copy());
 
+            if(this.Nodes.Any(e => e.Value.AdjacencyList.Any(f => f.Value.Cost < 0)))
+                return new List<Graph>();
+
             if (endNode == startNode)
             {
                 startNode.Color = Color.Orange;
@@ -229,6 +232,94 @@ namespace Dijkstra
             steps.Add(this.Copy());
 
             return steps;
+        }
+        public void DijkstraDistanceVector(Node startNode, Node endNode)
+        {
+            if (this.Nodes.Any(e => e.Value.AdjacencyList.Any(f => f.Value.Cost < 0)))
+                return;
+
+            if (endNode == startNode)            
+                return;           
+
+            var nodes = new List<Node>(Nodes.Values);
+            var distance = new Dictionary<Node, int>();
+            var shortest = new Dictionary<Node, Node>();
+
+            foreach (var node in Nodes)
+            {
+                distance.Add(node.Value, int.MaxValue);
+                shortest.Add(node.Value, null);
+                node.Value.Color = Color.White;
+            }
+
+            distance[startNode] = 0;
+
+            while (nodes.Count > 0)
+            {
+                var u = GetSmallestNode(nodes, distance);
+
+                if (u == null)
+                    break;
+
+                nodes.Remove(u);
+
+                u.Color = Color.Blue;
+
+                foreach (var v in u.AdjacencyList)
+                {
+                    if (distance[v.Key] > distance[u] + v.Value.Cost)
+                    {
+                        distance[v.Key] = distance[u] + v.Value.Cost; 
+                        shortest[v.Key] = u;             
+                        nodes.Add(v.Key);
+                    }
+
+                }               
+            }  
+        }
+        public void DijkstraBinary(Node startNode, Node endNode)
+        {
+            if (this.Nodes.Any(e => e.Value.AdjacencyList.Any(f => f.Value.Cost < 0)))
+                return;
+
+            if (endNode == startNode)
+                return;
+
+            var nodes = new List<Node>(Nodes.Values);
+            var distance = new Dictionary<Node, int>();
+            var shortest = new Dictionary<Node, Node>();
+
+            foreach (var node in Nodes)
+            {
+                distance.Add(node.Value, int.MaxValue);
+                shortest.Add(node.Value, null);
+                node.Value.Color = Color.White;
+            }
+
+            distance[startNode] = 0;
+
+            while (nodes.Count > 0)
+            {
+                var u = GetSmallestNode(nodes, distance);
+
+                if (u == null)
+                    break;
+
+                nodes.Remove(u);
+
+                u.Color = Color.Blue;
+
+                foreach (var v in u.AdjacencyList)
+                {
+                    if (distance[v.Key] > distance[u] + v.Value.Cost)
+                    {
+                        distance[v.Key] = distance[u] + v.Value.Cost;
+                        shortest[v.Key] = u;
+                        nodes.Add(v.Key);
+                    }
+
+                }
+            }
         }
 
         public string ToDotFormat()

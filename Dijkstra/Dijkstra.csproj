@@ -50,11 +50,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AboutBox1.cs">
+    <Compile Include="AboutBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AboutBox1.Designer.cs">
-      <DependentUpon>AboutBox1.cs</DependentUpon>
+    <Compile Include="AboutBox.Designer.cs">
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Benchmark.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Benchmark.Designer.cs">
+      <DependentUpon>Benchmark.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BinaryHeap.cs" />
+    <Compile Include="Legenda.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Legenda.Designer.cs">
+      <DependentUpon>Legenda.cs</DependentUpon>
     </Compile>
     <Compile Include="AddNode.cs">
       <SubType>Form</SubType>
@@ -83,8 +96,14 @@
     <Compile Include="Graph.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="AboutBox1.resx">
-      <DependentUpon>AboutBox1.cs</DependentUpon>
+    <EmbeddedResource Include="AboutBox.resx">
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Benchmark.resx">
+      <DependentUpon>Benchmark.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Legenda.resx">
+      <DependentUpon>Legenda.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AddNode.resx">
       <DependentUpon>AddNode.cs</DependentUpon>
@@ -127,7 +146,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>mkdir $(TargetDir)GraphViz
-copy /Y $(ProjectDir)lib\GraphViz\*.* $(TargetDir)GraphViz
+copy $(ProjectDir)lib\GraphViz\*.* $(TargetDir)GraphViz
 copy /Y $(ProjectDir)lib\GraphVizWrapper.dll $(TargetDir)GraphVizWrapper.dll</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

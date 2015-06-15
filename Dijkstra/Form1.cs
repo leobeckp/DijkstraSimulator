@@ -24,7 +24,8 @@ namespace Dijkstra
             Application.AddMessageFilter(this);
             this.pictureBox1.MouseWheel += pictureBox1_MouseWheel;
             this.panel1.MouseWheel += pictureBox1_MouseWheel;
-            Steps = new List<Graph>();
+            this.Steps = new List<Graph>();
+            this.Sizes = new Dictionary<Control, Rectangle>();
         }
         [DllImport("user32.dll")]
         private static extern IntPtr WindowFromPoint(Point pt);
@@ -39,7 +40,10 @@ namespace Dijkstra
         private int CurrentStep = 0;
         private List<Graph> Steps { get; set; }
         public string CurrentFileName { get; set; }
-        public AboutBox1 LegendForm { get; set; }
+        public Legenda LegendForm { get; set; }
+        public Dictionary<Control, Rectangle> Sizes { get; set; }
+        public KeyValuePair<int, int> FormOriginalSize { get; set; }
+        public float FontSize { get; set; }
 
         private const int scrollSpeed = 3;
         int _picWidth, _picHeight, _zoomInt = 100;
@@ -62,6 +66,14 @@ namespace Dijkstra
             }
             return false;
         }
+        private void AddControlToList(Control control)
+        {
+            if (!Sizes.ContainsKey(control))
+                Sizes.Add(control, control.Bounds);
+
+            foreach (Control child in control.Controls)            
+                AddControlToList(child);            
+        }
         private void Form1_Load(object sender, EventArgs e)
         {
             this.BaseGraph = new Graph(GraphType.Undirected);
@@ -76,6 +88,13 @@ namespace Dijkstra
             this.Generator = new GraphGeneration(getStartProcessQuery,
                                               getProcessStartInfoQuery,
                                               registerLayoutPluginCommand);
+
+            this.FormOriginalSize = new KeyValuePair<int, int>(this.ClientSize.Width, this.ClientSize.Height);
+
+            foreach(Control control in this.Controls)            
+                AddControlToList(control);
+
+            this.FontSize = this.Font.Size;
         }
         public void GetRatio()
         {
@@ -92,7 +111,32 @@ namespace Dijkstra
 
             pictureBox1.Update();
         }
+        private void ResizeControls()
+        {
+            var rateWidth = (double)this.ClientSize.Width / this.FormOriginalSize.Key;
+            var rateHeight = (double)this.ClientSize.Height / this.FormOriginalSize.Value;       
 
+            foreach (Control ctr in this.Sizes.Keys)
+            {
+                if (ctr == pictureBox1)
+                    continue;
+
+                System.Drawing.Size _controlSize = new System.Drawing.Size
+                ((int)(Sizes[ctr].Width * rateWidth),
+                    (int)(Sizes[ctr].Height * rateHeight)); //use for sizing
+
+                System.Drawing.Point _controlposition = new System.Drawing.Point((int)
+                (Sizes[ctr].X * rateWidth),
+                (int)(Sizes[ctr].Y * rateHeight));//use for location
+
+                //set bounds
+                ctr.Bounds = new System.Drawing.Rectangle(_controlposition, _controlSize); //Put together
+                
+                ctr.Font = new System.Drawing.Font(this.Font.FontFamily,
+                 (float)(((Convert.ToDouble(FontSize) * rateWidth) / 2) +
+                  ((Convert.ToDouble(FontSize) * rateHeight) / 2)));
+            }                           
+        }        
         private void CenterImage()
         {
             int x = (panel1.Width - pictureBox1.Width)/2;
@@ -432,7 +476,7 @@ namespace Dijkstra
             }
             else
             {
-                this.LegendForm = new AboutBox1();
+                this.LegendForm = new Legenda();
                 this.LegendForm.Closed += LegendFormOnClosed;
                 this.LegendForm.Show();
             }
@@ -467,6 +511,27 @@ namespace Dijkstra
                 ZoomPictureBox();
             }
 
+        }    
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            ResizeControls();
+        }
+
+        private void Form1_SizeChanged(object sender, EventArgs e)
+        {
+            //RefreshGraphDraw();
+            CenterImage();
+        }
+
+        private void sobreToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new AboutBox().ShowDialog();
+        }
+
+        private void opçõesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new Benchmark(this.BaseGraph).ShowDialog();
         }
     }
 }

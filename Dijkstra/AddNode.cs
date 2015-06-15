@@ -55,6 +55,13 @@ namespace Dijkstra
                             MessageBoxIcon.Error);
                         return;
                     }
+                    if (weight < 0)
+                    {
+                        MessageBox.Show("O peso da aresta do nó \"" + row.Cells[1].Value.ToString() + "\" é negativo e não suportado pelo Algoritmo de Dijkstra!",
+                            "Erro ao adicionar nó", MessageBoxButtons.OK,
+                            MessageBoxIcon.Error);
+                        return;
+                    }
                 }
             }
 
