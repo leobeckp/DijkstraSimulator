@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace Dijkstra
 {
-    partial class AboutBox1 : Form
+    public partial class AboutBox1 : Form
     {
         public AboutBox1()
         {

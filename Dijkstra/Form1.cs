@@ -39,7 +39,9 @@ namespace Dijkstra
         private int CurrentStep = 0;
         private List<Graph> Steps { get; set; }
         public string CurrentFileName { get; set; }
+        public AboutBox1 LegendForm { get; set; }
 
+        private const int scrollSpeed = 3;
         int _picWidth, _picHeight, _zoomInt = 100;
         private double _picRatio;
         private bool _isPanning = false;
@@ -212,8 +214,6 @@ namespace Dijkstra
 
         private void pictureBox1_MouseWheel(object sender, MouseEventArgs e)
         {
-            int scrollSpeed = 3;
-
             if (e.Delta > 0)
             {
                 _zoomInt += scrollSpeed;
@@ -426,7 +426,47 @@ namespace Dijkstra
 
         private void legendaToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            new AboutBox1().ShowDialog();
+            if (this.LegendForm != null)
+            {
+               this.LegendForm.Focus();
+            }
+            else
+            {
+                this.LegendForm = new AboutBox1();
+                this.LegendForm.Closed += LegendFormOnClosed;
+                this.LegendForm.Show();
+            }
+            
+        }
+
+        private void LegendFormOnClosed(object sender, EventArgs eventArgs)
+        {
+            this.LegendForm = null;
+        }
+
+        private void Form1_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Add)
+            {
+                _zoomInt += scrollSpeed;
+                if (_zoomInt > 500)
+                {
+                    _zoomInt = 500;
+                    return;
+                }
+                ZoomPictureBox();
+            }
+            if (e.KeyCode == Keys.Subtract)
+            {
+                _zoomInt -= scrollSpeed;
+                if (_zoomInt <= 10)
+                {
+                    _zoomInt = 10;
+                    return;
+                }
+                ZoomPictureBox();
+            }
+
         }
     }
 }

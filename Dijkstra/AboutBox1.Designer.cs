@@ -1,6 +1,6 @@
 ﻿namespace Dijkstra
 {
-    partial class AboutBox1
+    public partial class AboutBox1
     {
         /// <summary>
         /// Required designer variable.
