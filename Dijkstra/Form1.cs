@@ -390,7 +390,7 @@ namespace Dijkstra
                     return;
 
                 this.CurrentFileName = saveFileDialog1.FileName;
-                this.Text = "Algoritmo de Dijkstra - " + this.CurrentFileName;
+                this.Text = "DijkstraSimulator - " + this.CurrentFileName;
             }
             
             
@@ -407,7 +407,7 @@ namespace Dijkstra
                 return;
 
             this.CurrentFileName = openFileDialog1.FileName;
-            this.Text = "Algoritmo de Dijkstra - " + this.CurrentFileName;
+            this.Text = "DijkstraSimulator - " + this.CurrentFileName;
 
             IFormatter formatter = new BinaryFormatter();
             Stream stream = new FileStream(openFileDialog1.FileName, FileMode.Open, FileAccess.Read, FileShare.Read);
@@ -451,7 +451,7 @@ namespace Dijkstra
             this.BaseGraph = new Graph(GraphType.Undirected);
             this.UpdateGraph();
             this.CurrentFileName = "";
-            this.Text = "Algoritmo de Dijkstra - Sem Título.grf";
+            this.Text = "DijkstraSimulator - Sem Título.grf";
         }
 
         private void salvarComoToolStripMenuItem_Click(object sender, EventArgs e)
@@ -461,7 +461,7 @@ namespace Dijkstra
 
             this.CurrentFileName = saveFileDialog1.FileName;
 
-            this.Text = "Algoritmo de Dijkstra - " + this.CurrentFileName;
+            this.Text = "DijkstraSimulator - " + this.CurrentFileName;
             
             IFormatter formatter = new BinaryFormatter();
             Stream stream = new FileStream(this.CurrentFileName, FileMode.Create, FileAccess.Write, FileShare.None);

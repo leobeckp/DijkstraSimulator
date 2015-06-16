@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("Simulador do Algoritmo de Dijkstra para grafos, com opção de exibição passo-a-passo.\r\n\r\nDesenvolvido em C#, para apresentação em seminário da disciplina SSC0630 - Inteligência Artificial, ministrada pelo Prof. Dr. João Luís Garcia Rosa, na Universidade de São Paulo, campus São Carlos.\r\n\r\nAutores:\r\n- Leonardo Beck Prates, Nº USP 7962121\r\n- Marlon Jordan Francisco, Nº USP 8668945\r\n- Mateus Ribeiro Vanzella, Nº USP 8504181\r\n- Vitor Bertozzi da Silva, Nº USP 8622401")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Universidade de São Paulo")]
-[assembly: AssemblyProduct("Algoritmo de Dijkstra")]
+[assembly: AssemblyProduct("DijkstraSimulator")]
 [assembly: AssemblyCopyright("Copyright © 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
