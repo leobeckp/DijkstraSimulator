@@ -384,6 +384,7 @@ namespace Dijkstra
 
         private void salvarToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            var OldTitle = this.Text;
             if (string.IsNullOrEmpty(this.CurrentFileName))
             {
                 if (saveFileDialog1.ShowDialog() != DialogResult.OK)
@@ -392,12 +393,21 @@ namespace Dijkstra
                 this.CurrentFileName = saveFileDialog1.FileName;
                 this.Text = "DijkstraSimulator - " + this.CurrentFileName;
             }
+
+            try
+            {
+                IFormatter formatter = new BinaryFormatter();
+                Stream stream = new FileStream(this.CurrentFileName, FileMode.Create, FileAccess.Write, FileShare.None);
+                formatter.Serialize(stream, this.BaseGraph);
+                stream.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Não foi possível salvar o arquivo do grafo.\r\n\r\nMOTIVO: "+ex.Message+"\r\n\r\nDetalhes do erro: "+ex.StackTrace,
+                    "Erro ao salvar grafo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Text = OldTitle;
+            }
             
-            
-            IFormatter formatter = new BinaryFormatter();
-            Stream stream = new FileStream(this.CurrentFileName, FileMode.Create, FileAccess.Write, FileShare.None);
-            formatter.Serialize(stream, this.BaseGraph);
-            stream.Close();
         }
 
 
@@ -405,16 +415,27 @@ namespace Dijkstra
         {
             if (openFileDialog1.ShowDialog() != DialogResult.OK)
                 return;
+            var OldTitle = this.Text;
 
             this.CurrentFileName = openFileDialog1.FileName;
             this.Text = "DijkstraSimulator - " + this.CurrentFileName;
-
-            IFormatter formatter = new BinaryFormatter();
-            Stream stream = new FileStream(openFileDialog1.FileName, FileMode.Open, FileAccess.Read, FileShare.Read);
-            Graph obj = (Graph)formatter.Deserialize(stream);
-            stream.Close();
-            this.BaseGraph = obj;
-            this.UpdateGraph();
+            try
+            {
+                IFormatter formatter = new BinaryFormatter();
+                Stream stream = new FileStream(openFileDialog1.FileName, FileMode.Open, FileAccess.Read, FileShare.Read);
+                Graph obj = (Graph) formatter.Deserialize(stream);
+                stream.Close();
+                this.BaseGraph = obj;
+                this.UpdateGraph();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "O arquivo selecionado está danificado ou não está no formato correto da aplicação.\r\n\r\nMOTIVO: " +
+                    ex.Message + "\r\n\r\nDetalhes do erro: " + ex.StackTrace,
+                    "Erro ao carregar grafo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Text = OldTitle;
+            }
         }
 
         private void sairToolStripMenuItem_Click(object sender, EventArgs e)
