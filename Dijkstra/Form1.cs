@@ -114,29 +114,36 @@ namespace Dijkstra
         }
         private void ResizeControls()
         {
-            var rateWidth = (double)this.ClientSize.Width / this.FormOriginalSize.Key;
-            var rateHeight = (double)this.ClientSize.Height / this.FormOriginalSize.Value;       
-
-            foreach (Control ctr in this.Sizes.Keys)
+            try
             {
-                if (ctr == pictureBox1)
-                    continue;
+                var rateWidth = (double) this.ClientSize.Width/this.FormOriginalSize.Key;
+                var rateHeight = (double) this.ClientSize.Height/this.FormOriginalSize.Value;
 
-                System.Drawing.Size _controlSize = new System.Drawing.Size
-                ((int)(Sizes[ctr].Width * rateWidth),
-                    (int)(Sizes[ctr].Height * rateHeight)); //use for sizing
+                foreach (Control ctr in this.Sizes.Keys)
+                {
+                    if (ctr == pictureBox1)
+                        continue;
 
-                System.Drawing.Point _controlposition = new System.Drawing.Point((int)
-                (Sizes[ctr].X * rateWidth),
-                (int)(Sizes[ctr].Y * rateHeight));//use for location
+                    System.Drawing.Size _controlSize = new System.Drawing.Size
+                        ((int) (Sizes[ctr].Width*rateWidth),
+                            (int) (Sizes[ctr].Height*rateHeight)); //use for sizing
 
-                //set bounds
-                ctr.Bounds = new System.Drawing.Rectangle(_controlposition, _controlSize); //Put together
+                    System.Drawing.Point _controlposition = new System.Drawing.Point((int)
+                        (Sizes[ctr].X*rateWidth),
+                        (int) (Sizes[ctr].Y*rateHeight)); //use for location
+
+                    //set bounds
+                    ctr.Bounds = new System.Drawing.Rectangle(_controlposition, _controlSize); //Put together
+
+                    ctr.Font = new System.Drawing.Font(this.Font.FontFamily,
+                        (float) (((Convert.ToDouble(FontSize)*rateWidth)/2) +
+                                 ((Convert.ToDouble(FontSize)*rateHeight)/2)));
+                }
+            }
+            catch (Exception)
+            {
                 
-                ctr.Font = new System.Drawing.Font(this.Font.FontFamily,
-                 (float)(((Convert.ToDouble(FontSize) * rateWidth) / 2) +
-                  ((Convert.ToDouble(FontSize) * rateHeight) / 2)));
-            }                           
+            }
         }        
         private void CenterImage()
         {
