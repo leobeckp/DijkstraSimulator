@@ -35,14 +35,14 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.button3 = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.Adj = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.NName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Weight = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label2 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.Adj = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.NName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Weight = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -114,32 +114,6 @@
             this.dataGridView1.Size = new System.Drawing.Size(357, 138);
             this.dataGridView1.TabIndex = 16;
             // 
-            // Adj
-            // 
-            this.Adj.DataPropertyName = "Adj";
-            this.Adj.HeaderText = "Adjacente?";
-            this.Adj.Name = "Adj";
-            // 
-            // NName
-            // 
-            this.NName.DataPropertyName = "NName";
-            this.NName.HeaderText = "Nó";
-            this.NName.Name = "NName";
-            this.NName.ReadOnly = true;
-            // 
-            // Weight
-            // 
-            this.Weight.DataPropertyName = "Weight";
-            this.Weight.HeaderText = "Peso";
-            this.Weight.Name = "Weight";
-            // 
-            // Id
-            // 
-            this.Id.DataPropertyName = "Id";
-            this.Id.HeaderText = "Column1";
-            this.Id.Name = "Id";
-            this.Id.Visible = false;
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -175,6 +149,32 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // Adj
+            // 
+            this.Adj.DataPropertyName = "Adj";
+            this.Adj.HeaderText = "Adjacente?";
+            this.Adj.Name = "Adj";
+            // 
+            // NName
+            // 
+            this.NName.DataPropertyName = "NName";
+            this.NName.HeaderText = "Nó";
+            this.NName.Name = "NName";
+            this.NName.ReadOnly = true;
+            // 
+            // Weight
+            // 
+            this.Weight.DataPropertyName = "Weight";
+            this.Weight.HeaderText = "Peso";
+            this.Weight.Name = "Weight";
+            // 
+            // Id
+            // 
+            this.Id.DataPropertyName = "Id";
+            this.Id.HeaderText = "Column1";
+            this.Id.Name = "Id";
+            this.Id.Visible = false;
+            // 
             // EditNode
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -206,13 +206,13 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn Adj;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Weight;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Id;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Adj;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Weight;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Id;
     }
 }

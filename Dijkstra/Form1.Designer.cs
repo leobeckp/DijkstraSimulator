@@ -55,10 +55,10 @@
             this.salvarComoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sairToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.legendaToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.opçõesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sobreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.opçõesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -79,6 +79,7 @@
             this.listView1.TabIndex = 1;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
+            this.listView1.Resize += new System.EventHandler(this.listView1_Resize);
             // 
             // columnHeader1
             // 
@@ -320,6 +321,13 @@
             this.legendaToolStripMenuItem1.Text = "Legenda";
             this.legendaToolStripMenuItem1.Click += new System.EventHandler(this.legendaToolStripMenuItem1_Click);
             // 
+            // opçõesToolStripMenuItem
+            // 
+            this.opçõesToolStripMenuItem.Name = "opçõesToolStripMenuItem";
+            this.opçõesToolStripMenuItem.Size = new System.Drawing.Size(125, 20);
+            this.opçõesToolStripMenuItem.Text = "Tempo de Execução";
+            this.opçõesToolStripMenuItem.Click += new System.EventHandler(this.opçõesToolStripMenuItem_Click);
+            // 
             // sobreToolStripMenuItem
             // 
             this.sobreToolStripMenuItem.Name = "sobreToolStripMenuItem";
@@ -335,13 +343,6 @@
             // openFileDialog1
             // 
             this.openFileDialog1.Filter = "Grafo|*.grf";
-            // 
-            // opçõesToolStripMenuItem
-            // 
-            this.opçõesToolStripMenuItem.Name = "opçõesToolStripMenuItem";
-            this.opçõesToolStripMenuItem.Size = new System.Drawing.Size(125, 20);
-            this.opçõesToolStripMenuItem.Text = "Tempo de Execução";
-            this.opçõesToolStripMenuItem.Click += new System.EventHandler(this.opçõesToolStripMenuItem_Click);
             // 
             // Form1
             // 

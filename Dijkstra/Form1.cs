@@ -93,7 +93,8 @@ namespace Dijkstra
 
             foreach(Control control in this.Controls)            
                 AddControlToList(control);
-
+            listView1.Columns[0].Width = (int)Math.Floor((listView1.Width - 10) * 0.33);
+            listView1.Columns[1].Width = (int)Math.Floor((listView1.Width - 10) * 0.66);
             this.FontSize = this.Font.Size;
         }
         public void GetRatio()
@@ -169,9 +170,10 @@ namespace Dijkstra
             }
             catch (Exception e)
             {
-                MessageBox.Show(
-                    "Não foi possível renderizar o grafo. MOTIVO: " + e.Message + "\r\n\r\nDetalhes do erro: " +
-                    e.StackTrace, "Erro ao renderizar grafo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                var result = MessageBox.Show("Não foi possível renderizar o grafo. Gostaria de tentar novamente?\r\n\r\nMOTIVO: " + e.Message + "\r\n\r\nDetalhes do erro: " +
+                    e.StackTrace, "Erro ao renderizar grafo", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+                if(result == DialogResult.Yes)
+                    RefreshGraphDraw();
             }
         }
         private void UpdateGraph()
@@ -532,6 +534,12 @@ namespace Dijkstra
         private void opçõesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new Benchmark(this.BaseGraph).ShowDialog();
+        }
+
+        private void listView1_Resize(object sender, EventArgs e)
+        {
+            listView1.Columns[0].Width = (int) Math.Floor((listView1.Width - 10)*0.33);
+            listView1.Columns[1].Width = (int) Math.Floor((listView1.Width - 10)*0.66);
         }
     }
 }

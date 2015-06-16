@@ -63,6 +63,7 @@
       <DependentUpon>Benchmark.cs</DependentUpon>
     </Compile>
     <Compile Include="BinaryHeap.cs" />
+    <Compile Include="FibonacciHeap.cs" />
     <Compile Include="Legenda.cs">
       <SubType>Form</SubType>
     </Compile>

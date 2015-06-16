@@ -13,6 +13,28 @@ namespace Dijkstra
         Undirected = 0,
         Directed = 1,
     }
+
+    public class BinaryNode : IComparable<BinaryNode>
+    {
+        public Node Node;
+        public int Distance;
+
+        public BinaryNode (Node node, int distance)
+        {
+            this.Node = node;
+            this.Distance = distance;
+        }
+        public int CompareTo(BinaryNode node)
+        {
+           
+            if (this.Distance > node.Distance)
+                return 1;
+            if (this.Distance < node.Distance)
+                return -1;
+            else
+                return 0;
+        }
+    }
     [Serializable]
     public class Graph
     {
@@ -233,14 +255,43 @@ namespace Dijkstra
 
             return steps;
         }
-        public void DijkstraDistanceVector(Node startNode, Node endNode)
+
+        public void DijkstraFibonacciHeap(Node startNode)
         {
-            if (this.Nodes.Any(e => e.Value.AdjacencyList.Any(f => f.Value.Cost < 0)))
-                return;
+            var nodes = new FibonacciHeap<Node>();
+            var distance = new Dictionary<Node, int>();
+            var shortest = new Dictionary<Node, Node>();
 
-            if (endNode == startNode)            
-                return;           
+            foreach (var node in Nodes)
+            {
+                distance.Add(node.Value, int.MaxValue);
+                shortest.Add(node.Value, null);
+                nodes.Add(node.Value, int.MaxValue);
+            }
 
+            distance[startNode] = 0;
+
+            while (!nodes.IsEmpty())
+            {
+                var u = nodes.DequeueMin();
+
+                if (u == null)
+                    break;
+
+                foreach (var v in u.AdjacencyList)
+                {
+                    if (distance[v.Key] > distance[u] + v.Value.Cost)
+                    {
+                        distance[v.Key] = distance[u] + v.Value.Cost;
+                        shortest[v.Key] = u;
+                       // nodes.Add(v.Key, distance[v.Key]);
+                    }
+                }
+            } 
+        }
+
+        public void DijkstraDistanceVector(Node startNode)
+        {
             var nodes = new List<Node>(Nodes.Values);
             var distance = new Dictionary<Node, int>();
             var shortest = new Dictionary<Node, Node>();
@@ -249,7 +300,6 @@ namespace Dijkstra
             {
                 distance.Add(node.Value, int.MaxValue);
                 shortest.Add(node.Value, null);
-                node.Value.Color = Color.White;
             }
 
             distance[startNode] = 0;
@@ -262,8 +312,6 @@ namespace Dijkstra
                     break;
 
                 nodes.Remove(u);
-
-                u.Color = Color.Blue;
 
                 foreach (var v in u.AdjacencyList)
                 {
@@ -277,15 +325,9 @@ namespace Dijkstra
                 }               
             }  
         }
-        public void DijkstraBinary(Node startNode, Node endNode)
+        public void DijkstraBinary(Node startNode)
         {
-            if (this.Nodes.Any(e => e.Value.AdjacencyList.Any(f => f.Value.Cost < 0)))
-                return;
-
-            if (endNode == startNode)
-                return;
-
-            var nodes = new List<Node>(Nodes.Values);
+            var nodes = new BinaryHeap<BinaryNode>();
             var distance = new Dictionary<Node, int>();
             var shortest = new Dictionary<Node, Node>();
 
@@ -293,29 +335,28 @@ namespace Dijkstra
             {
                 distance.Add(node.Value, int.MaxValue);
                 shortest.Add(node.Value, null);
-                node.Value.Color = Color.White;
+                if(node.Value != startNode)
+                    nodes.Add(new BinaryNode(node.Value, int.MaxValue));
+                else
+                    nodes.Add(new BinaryNode(node.Value, 0));
             }
 
             distance[startNode] = 0;
 
             while (nodes.Count > 0)
             {
-                var u = GetSmallestNode(nodes, distance);
+                var u = nodes.Remove();
 
                 if (u == null)
                     break;
 
-                nodes.Remove(u);
-
-                u.Color = Color.Blue;
-
-                foreach (var v in u.AdjacencyList)
+                foreach (var v in u.Node.AdjacencyList)
                 {
-                    if (distance[v.Key] > distance[u] + v.Value.Cost)
+                    if (distance[v.Key] > distance[u.Node] + v.Value.Cost)
                     {
-                        distance[v.Key] = distance[u] + v.Value.Cost;
-                        shortest[v.Key] = u;
-                        nodes.Add(v.Key);
+                        distance[v.Key] = distance[u.Node] + v.Value.Cost;
+                        shortest[v.Key] = u.Node;
+                        //nodes.Add(new BinaryNode(v.Key, distance[v.Key]));
                     }
 
                 }
@@ -341,7 +382,7 @@ namespace Dijkstra
                         {
                             b += node.GetId() + (Type == GraphType.Directed ? " -> " : " -- ") + edge.Key.GetId() +
                                  "[label=\"" + edge.Value.Cost +
-                                 "\",weight=\"" + edge.Value.Cost + "\",color=\"" +
+                                 "\",Cost=\"" + edge.Value.Cost + "\",color=\"" +
                                  GetColorName(edge.Value.Color) + "\"]";
                             addedEdges.Add(edge.Value);
                         }
